@@ -94,13 +94,11 @@ public class TaskList {
     }
 
     private void sort(Order order, Comparator<Task> asc, Comparator<Task> desc) {
-        System.out.println(tasks);
         if (order == Order.ASC) {
             tasks.sort(asc);
         } else {
             tasks.sort(desc);
         }
-        System.out.println(tasks);
     }
 
     public List<String> lines() {

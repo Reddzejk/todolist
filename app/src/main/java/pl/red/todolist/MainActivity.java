@@ -90,18 +90,14 @@ public class MainActivity extends AppCompatActivity {
                 tasks.sortPriority(DESC);
                 break;
         }
-
         adapter.notifySorted();
     }
 
     public void writeToFile(MenuItem item) throws IOException {
-
         String dir = getExternalFilesDir(DIRECTORY_DOCUMENTS) + "/ToDoList/";
         createRootAppFolderIfNotExists(Paths.get(dir));
         String file = dir + "/tasklist" + LocalDateTime.now() + ".txt ";
-
         Files.write(Paths.get(file), tasks.lines());
-
     }
 
     private void createRootAppFolderIfNotExists(Path dir) throws IOException {
