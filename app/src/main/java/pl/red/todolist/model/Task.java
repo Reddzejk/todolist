@@ -1,12 +1,10 @@
 package pl.red.todolist.model;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Task {
-    private final UUID id;
     private String title;
     private String description;
     private Priority priority;
@@ -14,23 +12,19 @@ public class Task {
     private LocalDateTime creationDate;
     private LocalDateTime completeDate;
     private LocalDateTime deadlineDate;
-    private final Map<UUID, Attachment> attachments;
+    private final List<Attachment> attachments;
 
     private Task() {
-        this.id = UUID.randomUUID();
         finished = false;
         completeDate = null;
         this.creationDate = LocalDateTime.now();
-        this.attachments = new HashMap<>();
+        this.attachments = new ArrayList<>();
     }
 
     public static Builder builder() {
         return new Builder();
     }
 
-    public UUID getId() {
-        return id;
-    }
 
     public String getTitle() {
         return title;
@@ -44,7 +38,7 @@ public class Task {
         return priority;
     }
 
-    public boolean isFinished() {
+    public Boolean isFinished() {
         return finished;
     }
 
@@ -60,7 +54,7 @@ public class Task {
         return deadlineDate;
     }
 
-    public Map<UUID, Attachment> getAttachments() {
+    public List<Attachment> getAttachments() {
         return attachments;
     }
 
@@ -93,10 +87,10 @@ public class Task {
         private String description;
         private Priority priority;
         private LocalDateTime deadlineDate;
-        private final Map<UUID, Attachment> attachments;
+        private final List<Attachment> attachments;
 
         private Builder() {
-            this.attachments = new HashMap<>();
+            this.attachments = new ArrayList<>();
         }
 
         public Builder title(String title) {
@@ -120,7 +114,7 @@ public class Task {
         }
 
         public Builder addAttachment(Attachment attachment) {
-            this.attachments.put(attachment.getId(), attachment);
+            this.attachments.add(attachment);
             return this;
         }
 
@@ -130,10 +124,15 @@ public class Task {
             task.description = description;
             task.priority = priority;
             task.deadlineDate = deadlineDate;
-            task.attachments.putAll(attachments);
+            task.attachments.addAll(attachments);
             return task;
         }
     }
 
+    @Override
+    public String toString() {
+        return "Task{" + title +
+                '}';
+    }
 }
 

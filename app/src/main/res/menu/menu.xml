@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity">
+
+    <item
+        android:id="@+id/overflowMenu"
+        android:icon="@drawable/menu"
+        android:orderInCategory="200"
+        android:title=""
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/az"
+                android:onClick="sort"
+                android:title="@string/az"
+                app:showAsAction="never" />
+
+            <item
+                android:id="@+id/za"
+                android:onClick="sort"
+                android:title="@string/za"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/priority_asc"
+                android:icon="@drawable/asc"
+                android:onClick="sort"
+                android:title="@string/priority"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/priority_desc"
+                android:icon="@drawable/desc"
+                android:onClick="sort"
+                android:title="@string/priority"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/deadline_asc"
+                android:icon="@drawable/asc"
+                android:onClick="sort"
+                android:title="@string/deadline"
+                app:showAsAction="never" />
+
+            <item
+                android:id="@+id/deadline_desc"
+                android:icon="@drawable/desc"
+                android:onClick="sort"
+                android:title="@string/deadline"
+                app:showAsAction="never" />
+
+            <item
+                android:id="@+id/status_asc"
+                android:icon="@drawable/asc"
+                android:onClick="sort"
+                android:title="@string/status"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/status_desc"
+                android:icon="@drawable/desc"
+                android:onClick="sort"
+                android:title="@string/status"
+                app:showAsAction="never" />
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/export"
+        android:icon="@drawable/export"
+        android:orderInCategory="100"
+        android:onClick="writeToFile"
+        android:title="@string/export"
+        app:showAsAction="ifRoom" />
+
+</menu>
