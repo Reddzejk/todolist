@@ -81,7 +81,6 @@ public class TaskList {
     }
 
     public void sortDeadline(Order order) {
-
         sort(order, (o1, o2) -> o1.getDeadlineDate().compareTo(o2.getDeadlineDate()), (o1, o2) -> o2.getDeadlineDate().compareTo(o1.getDeadlineDate()));
     }
 
