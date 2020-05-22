@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".controller.MainActivity">
+    tools:context=".controller.AttachmentActivity">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/list"
+        android:id="@+id/attachments"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -24,9 +24,9 @@
         android:layout_marginEnd="176dp"
         android:layout_marginBottom="16dp"
         android:clickable="true"
-        android:onClick="addTask"
+        android:onClick="addAttachment"
         app:backgroundTint="@color/blue"
-        app:layout_constraintBottom_toBottomOf="@+id/list"
+        app:layout_constraintBottom_toBottomOf="@+id/attachments"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/add" />
 

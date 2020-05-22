@@ -1,4 +1,4 @@
-package pl.red.todolist.buisness;
+package pl.red.todolist.service;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -25,7 +25,7 @@ public class NotificationService {
     }
 
     public void notify(String message, long count) {
-        notificationBuilder.setContentText(count + " " + message);
+        notificationBuilder.setContentText(count + " Task(s) " + message);
 
         NotificationCompat.BigTextStyle bigText = new NotificationCompat.BigTextStyle();
         bigText.bigText(count + "\n" + message);

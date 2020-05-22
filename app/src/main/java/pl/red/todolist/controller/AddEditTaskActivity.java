@@ -1,4 +1,4 @@
-package pl.red.todolist;
+package pl.red.todolist.controller;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TimePicker;
@@ -20,7 +19,10 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import pl.red.todolist.R;
+import pl.red.todolist.model.Attachment;
 import pl.red.todolist.model.Priority;
 import pl.red.todolist.model.Task;
 
@@ -30,8 +32,8 @@ public class AddEditTaskActivity extends Activity {
     EditText title;
     EditText description;
     RadioGroup priority;
-    ImageView v;
-    private final List<Uri> paths = new ArrayList<>();
+
+    List<Uri> attachments = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,7 +46,6 @@ public class AddEditTaskActivity extends Activity {
         description = findViewById(R.id.description);
         priority = findViewById(R.id.priority);
         loadTaskIfExists();
-        v = findViewById(R.id.imageView);
     }
 
     private void loadTaskIfExists() {
@@ -55,9 +56,10 @@ public class AddEditTaskActivity extends Activity {
         String description = getIntent().getStringExtra("description");
         LocalDateTime deadline = (LocalDateTime) getIntent().getSerializableExtra("deadline");
         Priority priority = Priority.valueOf(getIntent().getStringExtra("priority"));
+        attachments = (List<Uri>) getIntent().getSerializableExtra("attachments");
         this.title.setText(title);
         this.description.setText(description);
-        dpicker.init(deadline.getYear(), deadline.getMonthValue(), deadline.getDayOfMonth(), null);
+        dpicker.init(deadline.getYear(), deadline.getMonth().getValue()-1, deadline.getDayOfMonth(), null);
         tpicker.setMinute(deadline.getMinute());
         tpicker.setHour(deadline.getHour());
         this.priority.check(priority.getId());
@@ -73,9 +75,8 @@ public class AddEditTaskActivity extends Activity {
                 .description(description.getText().toString())
                 .priority(Priority.valueOf(String.valueOf(checked.getText())))
                 .deadlineDate(parseDate())
-//                .addAllAttachments(paths.stream().map(Attachment::new).collect(Collectors.toList()))
+                .replaceAttachments(attachments.stream().map(Uri::toString).map(Attachment::new).collect(Collectors.toList()))
                 .build();
-
         sendTask(newTask);
 
     }
@@ -103,22 +104,21 @@ public class AddEditTaskActivity extends Activity {
     }
 
     private LocalDateTime parseDate() {
-        LocalDate date = LocalDate.of(dpicker.getYear(), dpicker.getMonth(), dpicker.getDayOfMonth());
+        LocalDate date = LocalDate.of(dpicker.getYear(), dpicker.getMonth() + 1, dpicker.getDayOfMonth());
         LocalTime time = LocalTime.of(tpicker.getHour(), tpicker.getMinute());
         return LocalDateTime.of(date, time);
     }
 
-    public void addAttachment(View view) {
-        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-        intent.setType("image/jpg");
-        startActivityForResult(Intent.createChooser(intent, "Select a File to Upload"), 3);
+    public void viewAttachments(View view) {
+        Intent intent = new Intent(getApplicationContext(), AttachmentActivity.class);
+        intent.putExtra("attachmentList", (ArrayList<Uri>) attachments);
+        startActivityForResult(intent, 3);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 3) {
-            Uri path = data.getData();
-            paths.add(path);
+        if (requestCode == 3 && resultCode == RESULT_OK) {
+            attachments = (List<Uri>) data.getSerializableExtra("attachments");
         }
     }
 }

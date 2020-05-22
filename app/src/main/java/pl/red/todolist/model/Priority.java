@@ -1,7 +1,5 @@
 package pl.red.todolist.model;
 
-import pl.red.todolist.R;
-
 import static pl.red.todolist.R.drawable.priority_high;
 import static pl.red.todolist.R.drawable.priority_low;
 import static pl.red.todolist.R.drawable.priority_medium;

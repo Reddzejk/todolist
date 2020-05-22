@@ -1,5 +1,7 @@
 package pl.red.todolist.model;
 
+import android.net.Uri;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -8,6 +10,7 @@ import java.io.ObjectOutputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
@@ -42,6 +45,10 @@ public class TaskListFacade {
         return tasks.get(position).getDeadlineDate();
     }
 
+    public LocalDateTime getCompletedDataTimeTask(int position) {
+        return tasks.get(position).getCompleteDate();
+    }
+
 
     public int getPriorityColorTask(int position) {
         return tasks.get(position).getPriority().getColor();
@@ -61,37 +68,43 @@ public class TaskListFacade {
 
     public void setStatusTask(int position, boolean isChecked) {
         tasks.get(position).setFinished(isChecked);
+        if (isChecked) {
+            tasks.get(position).setCompleteIfEmpty(LocalDateTime.now());
+        } else {
+            tasks.get(position).resetCompleted();
+        }
     }
 
-    public String getAfterDeadline() {
+    public String getMessageAfterDeadlineTasks() {
         LocalDateTime notificationDate = LocalDate.now().plusDays(1).atStartOfDay();
 
-        return tasks.stream().filter(task -> !task.isFinished() && task.getDeadlineDate().isBefore(notificationDate))
+        return tasks.stream()
+                .filter(task -> !task.isFinished() && task.getDeadlineDate().isBefore(notificationDate))
                 .map(Task::getTitle)
                 .collect(Collectors.joining("\n"));
     }
 
-    public void sortTitle(Order order) {
-        sort(order, (o1, o2) -> o1.getTitle().compareTo(o2.getTitle()), (o1, o2) -> o2.getTitle().compareTo(o1.getTitle()));
+    public void sortTitle(Order asc) {
+        sort(asc, (o1, o2) -> o1.getTitle().compareTo(o2.getTitle()));
     }
 
+
     public void sortDeadline(Order order) {
-        sort(order, (o1, o2) -> o1.getDeadlineDate().compareTo(o2.getDeadlineDate()), (o1, o2) -> o2.getDeadlineDate().compareTo(o1.getDeadlineDate()));
+        sort(order, (o1, o2) -> o1.getDeadlineDate().compareTo(o2.getDeadlineDate()));
     }
 
     public void sortPriority(Order order) {
-        sort(order, (o1, o2) -> o1.getPriority().compareTo(o2.getPriority()), (o1, o2) -> o2.getPriority().compareTo(o1.getPriority()));
+        sort(order, (o1, o2) -> o1.getPriority().compareTo(o2.getPriority()));
     }
 
     public void sortStatus(Order order) {
-        sort(order, (o1, o2) -> o1.isFinished().compareTo(o2.isFinished()), (o1, o2) -> o2.isFinished().compareTo(o1.isFinished()));
+        sort(order, (o1, o2) -> o1.isFinished().compareTo(o2.isFinished()));
     }
 
-    private void sort(Order order, Comparator<Task> asc, Comparator<Task> desc) {
-        if (order == Order.ASC) {
-            tasks.sort(asc);
-        } else {
-            tasks.sort(desc);
+    private void sort(Order order, Comparator<Task> asc) {
+        tasks.sort(asc);
+        if (order == Order.DESC) {
+            Collections.reverse(tasks);
         }
     }
 
@@ -117,13 +130,20 @@ public class TaskListFacade {
     }
 
     public void deserialize(byte[] loadData) {
+        if (loadData.length == 0) {
+            return;
+        }
         ByteArrayInputStream bos = new ByteArrayInputStream(loadData);
-        ObjectInputStream oos = null;
+        ObjectInputStream oos;
         try {
             oos = new ObjectInputStream(bos);
             tasks.addAll((Collection<? extends Task>) oos.readObject());
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    public List<Uri> getAttachmentsUri(int position) {
+        return tasks.get(position).getAttachmentsUri();
     }
 }

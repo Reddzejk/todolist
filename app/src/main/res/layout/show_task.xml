@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".controller.AddEditTaskActivity">
+    tools:context=".controller.ShowTaskActivity">
 
 
     <TableLayout
@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:weightSum="8"
-        app:layout_constraintBottom_toTopOf="@+id/save"
+        app:layout_constraintBottom_toTopOf="@+id/imageButton_show"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,11 +25,12 @@
             android:layout_weight="0.5">
 
             <EditText
-                android:id="@+id/title"
+                android:id="@+id/title_show"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:ems="10"
+                android:enabled="false"
                 android:hint="@string/task_title"
                 android:imeOptions="actionDone"
                 android:importantForAutofill="no"
@@ -43,7 +44,7 @@
             android:layout_weight="1">
 
             <RadioGroup
-                android:id="@+id/priority"
+                android:id="@+id/priority_show"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
@@ -57,6 +58,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:checked="true"
+                    android:enabled="false"
                     android:text="@string/low"
                     android:textColor="#4CAF50" />
 
@@ -65,6 +67,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
+                    android:enabled="false"
                     android:text="@string/medium"
                     android:textColor="#FF9800" />
 
@@ -73,6 +76,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
+                    android:enabled="false"
                     android:text="@string/high"
                     android:textColor="#F44336" />
             </RadioGroup>
@@ -84,11 +88,12 @@
             android:layout_weight="3">
 
             <EditText
-                android:id="@+id/description"
+                android:id="@+id/description_show"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="3"
                 android:ems="10"
+                android:enabled="false"
                 android:hint="@string/task_description"
                 android:importantForAutofill="no"
                 android:inputType="textMultiLine"
@@ -98,40 +103,46 @@
 
         <TableRow
             android:layout_width="match_parent"
-            android:layout_height="233dp"
-            android:layout_weight="0.1">
+            android:layout_height="match_parent"
+            android:layout_weight="0.5">
 
-            <TimePicker
-                android:id="@+id/time_picker"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <TextView
+                android:id="@+id/deadline_show"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:timePickerMode="spinner" />
+                android:ems="10"
+                android:enabled="false"
+                android:hint="@string/task_title"
+                android:imeOptions="actionDone"
+                android:importantForAutofill="no"
+                android:inputType="text" />
 
-            <DatePicker
-                android:id="@+id/date_picker"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:calendarViewShown="false"
-                android:datePickerMode="spinner" />
         </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5">
+
+            <TextView
+                android:id="@+id/creation_show"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:ems="10"
+                android:enabled="false"
+                android:hint="@string/task_title"
+                android:imeOptions="actionDone"
+                android:importantForAutofill="no"
+                android:inputType="text" />
+        </TableRow>
+
 
     </TableLayout>
 
-    <Button
-        android:id="@+id/save"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="12dp"
-        android:onClick="save"
-        android:text="@string/save"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/imageButton_show"
         android:layout_width="53dp"
         android:layout_height="41dp"
         android:layout_marginStart="19dp"

@@ -1,5 +1,7 @@
 package pl.red.todolist.model;
 
+import android.net.Uri;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -10,15 +12,13 @@ public class Task implements Serializable {
     private String description;
     private Priority priority;
     private boolean finished;
-    private LocalDateTime creationDate;
     private LocalDateTime completeDate;
     private LocalDateTime deadlineDate;
-    private final List<Attachment> attachments;
+    private final ArrayList<Attachment> attachments;
 
     private Task() {
         finished = false;
         completeDate = null;
-        this.creationDate = LocalDateTime.now();
         this.attachments = new ArrayList<>();
     }
 
@@ -43,10 +43,6 @@ public class Task implements Serializable {
         return finished;
     }
 
-    public LocalDateTime getCreationDate() {
-        return creationDate;
-    }
-
     public LocalDateTime getCompleteDate() {
         return completeDate;
     }
@@ -55,32 +51,25 @@ public class Task implements Serializable {
         return deadlineDate;
     }
 
-    public List<Attachment> getAttachments() {
-        return attachments;
+    public List<Uri> getAttachmentsUri() {
+        ArrayList<Uri> uris = new ArrayList<>();
+        attachments.stream().map(Attachment::getUri).forEach(uris::add);
+        return uris;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setPriority(Priority priority) {
-        this.priority = priority;
-    }
 
     public void setFinished(boolean finished) {
         this.finished = finished;
     }
 
-    public void setCompleteDate(LocalDateTime completeDate) {
-        this.completeDate = completeDate;
+    public void setCompleteIfEmpty(LocalDateTime completeDate) {
+        if (this.completeDate == null) {
+            this.completeDate = completeDate;
+        }
     }
 
-    public void setDeadlineDate(LocalDateTime deadlineDate) {
-        this.deadlineDate = deadlineDate;
+    public void resetCompleted() {
+        this.completeDate = null;
     }
 
     public static final class Builder {
@@ -114,12 +103,8 @@ public class Task implements Serializable {
             return this;
         }
 
-        public Builder addAttachment(Attachment attachment) {
-            this.attachments.add(attachment);
-            return this;
-        }
-
-        public Builder addAllAttachments(List<Attachment> attachments) {
+        public Builder replaceAttachments(List<Attachment> attachments) {
+            this.attachments.clear();
             this.attachments.addAll(attachments);
             return this;
         }
@@ -142,7 +127,6 @@ public class Task implements Serializable {
                 ", description='" + description + '\'' +
                 ", priority=" + priority +
                 ", finished=" + finished +
-                ", creationDate=" + creationDate +
                 ", completeDate=" + completeDate +
                 ", deadlineDate=" + deadlineDate +
                 ", attachments=" + attachments +

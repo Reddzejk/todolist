@@ -1,5 +1,7 @@
 package pl.red.todolist.model;
 
+import android.net.Uri;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -10,13 +12,9 @@ public class Attachment implements Serializable {
         this.path = name;
     }
 
-    public String getName() {
-        return path;
-    }
 
-
-    public void setName(String name) {
-        this.path = name;
+    Uri getUri() {
+        return Uri.parse(path);
     }
 
     @Override
