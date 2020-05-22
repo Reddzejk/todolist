@@ -24,10 +24,10 @@
         android:layout_marginEnd="176dp"
         android:layout_marginBottom="16dp"
         android:clickable="true"
+        android:onClick="addTask"
         app:backgroundTint="@color/blue"
         app:layout_constraintBottom_toBottomOf="@+id/list"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/add" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

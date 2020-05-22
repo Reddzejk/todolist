@@ -2,6 +2,7 @@ package pl.red.todolist.buisness;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,14 +14,17 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import pl.red.todolist.R;
-import pl.red.todolist.model.TaskList;
+import pl.red.todolist.model.TaskListFacade;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder> {
 
-    private final TaskList tasks;
+    private final TaskListFacade tasks;
+    private Intent intent;
 
-    public TaskAdapter(TaskList tasks) {
+
+    public TaskAdapter(TaskListFacade tasks, Intent intent) {
         this.tasks = tasks;
+        this.intent = intent;
     }
 
     @Override
@@ -57,15 +61,14 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
             deadline = itemView.findViewById(R.id.deadline);
             priority = itemView.findViewById(R.id.priority);
             finished = itemView.findViewById(R.id.finished);
-            finished.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                tasks.setStatusTask(getAdapterPosition(), isChecked);
-            });
-            itemView.findViewById(R.id.delete).setOnClickListener(
+
+            ((View) itemView.findViewById(R.id.delete).getParent()).setOnClickListener(
                     v -> {
-                        tasks.removeTask(getAdapterPosition());
-                        notifyItemRemoved(getAdapterPosition());
-                        notifyItemRangeChanged(getAdapterPosition(), tasks.count() + 1);
-                    });
+                        intent.putExtra("position", getAdapterPosition());
+                    }
+            );
+
+            finished.setOnCheckedChangeListener((buttonView, isChecked) -> tasks.setStatusTask(getAdapterPosition(), isChecked));
         }
 
         void setBackground(int position) {
@@ -77,7 +80,12 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.TaskViewHolder
         }
     }
 
-    public void notifySorted() {
+    public void notifyChanged() {
         notifyDataSetChanged();
+    }
+
+    public void notifyDeleted(int pos) {
+        notifyItemRemoved(pos);
+        notifyItemRangeChanged(pos, tasks.count() + 1);
     }
 }

@@ -1,29 +1,34 @@
 package pl.red.todolist.model;
 
-import java.util.UUID;
+import java.io.Serializable;
+import java.util.Objects;
 
-class Attachment {
-    private String name;
-    private String content;
+public class Attachment implements Serializable {
+    private String path;
 
-    public Attachment(String name, String content) {
-        this.name = name;
-        this.content = content;
+    public Attachment(String name) {
+        this.path = name;
     }
 
     public String getName() {
-        return name;
+        return path;
     }
 
-    public String getContent() {
-        return content;
-    }
 
     public void setName(String name) {
-        this.name = name;
+        this.path = name;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Attachment that = (Attachment) o;
+        return Objects.equals(path, that.path);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(path);
     }
 }

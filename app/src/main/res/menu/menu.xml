@@ -67,7 +67,7 @@
         android:id="@+id/export"
         android:icon="@drawable/export"
         android:orderInCategory="100"
-        android:onClick="writeToFile"
+        android:onClick="writeToFiles"
         android:title="@string/export"
         app:showAsAction="ifRoom" />
 

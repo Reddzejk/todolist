@@ -51,6 +51,7 @@
             android:background="@android:color/transparent"
             android:clickable="true"
             android:gravity="center"
+            android:onClick="edit"
             android:paddingStart="10dp"
             android:paddingEnd="15dp"
             android:src="@drawable/edit" />
@@ -63,6 +64,7 @@
             android:background="@android:color/transparent"
             android:clickable="true"
             android:gravity="center"
+            android:onClick="delete"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
             android:src="@drawable/delete" />

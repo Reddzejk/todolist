@@ -1,20 +1,31 @@
 package pl.red.todolist.model;
 
+import pl.red.todolist.R;
+
 import static pl.red.todolist.R.drawable.priority_high;
 import static pl.red.todolist.R.drawable.priority_low;
 import static pl.red.todolist.R.drawable.priority_medium;
+import static pl.red.todolist.R.id.high;
+import static pl.red.todolist.R.id.low;
+import static pl.red.todolist.R.id.medium;
 
-enum Priority {
-    LOW(priority_low), MEDIUM(priority_medium), HIGH(priority_high);
+public enum Priority {
+    LOW(priority_low, low), MEDIUM(priority_medium, medium), HIGH(priority_high, high);
 
 
-    Priority(int color) {
+    Priority(int color, int id) {
         this.color = color;
+        this.id = id;
     }
 
-    private int color;
+    private final int color;
+    private final int id;
 
     public int getColor() {
         return color;
+    }
+
+    public int getId() {
+        return id;
     }
 }

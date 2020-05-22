@@ -1,39 +1,25 @@
 package pl.red.todolist.model;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 import pl.red.todolist.utils.Order;
 
-public class TaskList {
+public class TaskListFacade {
     private final List<Task> tasks;
 
-    public TaskList() {
+    public TaskListFacade() {
         this.tasks = new LinkedList<>();
-    }
-
-    public TaskList(int count) {
-        this.tasks = new LinkedList<>();
-        Random random = new Random();
-        int lastID = 0;
-        for (int i = 1; i <= count; i++) {
-            Task task = Task.builder()
-                    .title("Lorem Ipsum Tytul zadania " + ++lastID)
-                    .priority(Priority.values()[random.nextInt(3)])
-                    .deadlineDate(LocalDateTime.now().minusDays(random.nextInt(10) + 1))
-                    .description("TO JEST OPIS KTÓREGO NNA RAZIE NIE TRZEBA")
-                    .build();
-            tasks.add(task);
-        }
-    }
-
-    public TaskList(List<Task> tasks) {
-        this.tasks = tasks;
     }
 
     public void addTask(Task task) {
@@ -52,8 +38,17 @@ public class TaskList {
         return tasks.get(position).getDeadlineDate().toLocalDate().toString();
     }
 
+    public LocalDateTime getDeadlineDateTimeTask(int position) {
+        return tasks.get(position).getDeadlineDate();
+    }
+
+
     public int getPriorityColorTask(int position) {
         return tasks.get(position).getPriority().getColor();
+    }
+
+    public String getPriorityNameTask(int position) {
+        return tasks.get(position).getPriority().name();
     }
 
     public boolean getStatusTask(int position) {
@@ -104,5 +99,31 @@ public class TaskList {
         return tasks.stream()
                 .map(Task::toString)
                 .collect(Collectors.toList());
+    }
+
+    public String getDescriptionTask(int position) {
+        return tasks.get(position).getDescription();
+    }
+
+    public void replaceTask(int position, Task result) {
+        tasks.set(position, result);
+    }
+
+    public byte[] getSerialized() throws IOException {
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(bos);
+        oos.writeObject(tasks);
+        return bos.toByteArray();
+    }
+
+    public void deserialize(byte[] loadData) {
+        ByteArrayInputStream bos = new ByteArrayInputStream(loadData);
+        ObjectInputStream oos = null;
+        try {
+            oos = new ObjectInputStream(bos);
+            tasks.addAll((Collection<? extends Task>) oos.readObject());
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }

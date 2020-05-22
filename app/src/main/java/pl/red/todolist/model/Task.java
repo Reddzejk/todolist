@@ -1,10 +1,11 @@
 package pl.red.todolist.model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Task {
+public class Task implements Serializable {
     private String title;
     private String description;
     private Priority priority;
@@ -118,6 +119,11 @@ public class Task {
             return this;
         }
 
+        public Builder addAllAttachments(List<Attachment> attachments) {
+            this.attachments.addAll(attachments);
+            return this;
+        }
+
         public Task build() {
             Task task = new Task();
             task.title = title;
@@ -131,7 +137,15 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Task{" + title +
+        return "Task{" +
+                "title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", priority=" + priority +
+                ", finished=" + finished +
+                ", creationDate=" + creationDate +
+                ", completeDate=" + completeDate +
+                ", deadlineDate=" + deadlineDate +
+                ", attachments=" + attachments +
                 '}';
     }
 }
